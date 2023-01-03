@@ -1,4 +1,4 @@
-# Creating project with skill training
+# Creating project with skillsoft training
 Use `npm init` to initialize as valid node module and create inital package.json
 Use `npm install <pgk>` to install packages and save it as a dependency in the package.json file
 
