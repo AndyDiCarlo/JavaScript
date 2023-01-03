@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <div id="clock"></div>
+</body>
+<script>
+    function updateClock() {
+        // get the current time
+        var now = new Date();
+    
+        // get the hours, minutes, and seconds from the current time
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        var seconds = now.getSeconds();
+    
+        // add a leading zero to the hours, minutes, and seconds if they are less than 10
+        hours = (hours < 10) ? "0" + hours : hours;
+        minutes = (minutes < 10) ? "0" + minutes : minutes;
+        seconds = (seconds < 10) ? "0" + seconds : seconds;
+    
+        // create a string representation of the time
+        var timeString = hours + ":" + minutes + ":" + seconds;
+    
+        // get the clock element and set its text to the current time
+        var clockElement = document.getElementById("clock");
+        clockElement.innerText = timeString;
+    }
+    
+    // update the clock every 1000 milliseconds (1 second)
+    setInterval(updateClock, 1000);
+</script>
+</html>
