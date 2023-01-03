@@ -1,0 +1,65 @@
+<html>
+    <body>
+        <div style="text-align: center;">
+            <h1>Stopwatch</h1>
+
+            <p id="stopwatch">00:00:00</p>
+
+            <button id="startButton">Start</button>
+            <button id="stopButton">Stop</button>
+            <button id="resetButton">Reset</button>
+        </div>
+
+        <script>
+            let seconds = 0;
+            let minutes = 0;
+            let hours = 0;
+            let running = false;
+            let interval;
+
+            const stopwatch = document.getElementById('stopwatch');
+            const startButton = document.getElementById('startButton');
+            const stopButton = document.getElementById('stopButton');
+            const resetButton = document.getElementById('resetButton');
+
+            function startTimer() {
+                if (!running) {
+                    interval = setInterval(() => {
+                    seconds++;
+                    if (seconds === 60) {
+                        seconds = 0;
+                        minutes++;
+                    }
+                    if (minutes === 60) {
+                        minutes = 0;
+                        hours++;
+                    }
+                    hours = ((hours < 10 && minutes == 0 && seconds == 0) || hours == "0") ? "0" + hours : hours;
+                    minutes = ((minutes < 10 && seconds == 0) || minutes == "0") ? "0" + minutes : minutes;
+                    seconds = (seconds < 10) ? "0" + seconds : seconds;
+                    
+                    stopwatch.innerHTML = `${hours}:${minutes}:${seconds}`;
+                    }, 1000);
+                    running = true;
+                }
+            }
+
+            function stopTimer() {
+                clearInterval(interval);
+                running = false;
+            }
+
+            function resetTimer() {
+                stopTimer();
+                seconds = 0;
+                minutes = 0;
+                hours = 0;
+                stopwatch.innerHTML = '00:00:00';
+            }
+
+            startButton.addEventListener('click', startTimer);
+            stopButton.addEventListener('click', stopTimer);
+            resetButton.addEventListener('click', resetTimer);
+        </script>
+    </body>
+</html>
