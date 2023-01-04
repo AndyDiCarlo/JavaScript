@@ -1,4 +1,6 @@
 # JavaScript
+Most of the JavaScript is wrapped in a <script> block of html files and not in separate .js files
+
 ## Hello World
  - greeting.html - prompts the user for their name and then sends an alert saying Hello
  - sample.js - node js version of creating a local host page that says Hello on it
