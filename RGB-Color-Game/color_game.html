@@ -1,0 +1,176 @@
+<html>
+<head>
+	<title>Color Game</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link href='https://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>	
+
+</head>
+<body>
+	<h1>Guess the Color <span id="color-display">RGB</span></h1>
+    <h2>Score: <span id="score-count"></span>&nbsp;&nbsp;&nbsp;&nbsp;Lives: <span id="lives-count"></span></h2>
+	<div id ="stripe">
+		<button id="reset">New Colors</button>
+		<span id="message"></span>
+		<button class="mode">Easy</button>
+		<button class="mode selected">Hard</button>
+        <button class="difficulty selected">Casual</button>
+        <button class="difficulty">Competitive</button>
+	</div>
+	<div id="container">
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+	</div>
+
+	<script>
+        var numSquares = 6;
+        var colors = [];
+        var pickedColor;
+
+        var squares = document.querySelectorAll(".square");
+        var colorDisplay = document.querySelector("#color-display");
+        var messageDisplay = document.querySelector("#message");
+        var scoreDisplay = document.querySelector("#score-count");
+        var livesDisplay = document.querySelector("#lives-count");
+        var h1 = document.querySelector("h1");
+        var h2 = document.querySelector("h2");
+        var resetButton = document.querySelector("#reset");
+        var modeButtons = document.querySelectorAll(".mode");
+        var easyButton = document.querySelector(".mode");
+        var difficultyButtons = document.querySelectorAll(".difficulty");
+        var casualButton = document.querySelector(".mode");
+
+        init();
+
+        function init() {
+            colorDisplay.textContent = pickedColor;
+            scoreDisplay.textContent = 0
+            livesDisplay.textContent = Infinity
+            setupSquares();
+            setupMode();
+            setupDifficulty();
+            reset();
+        }
+
+        resetButton.addEventListener("click", function() {
+            reset();
+        });
+
+        function setupSquares() {
+            for (var i = 0; i < squares.length; i++) {
+                squares[i].style.backgroundColor = colors[i];
+                squares[i].addEventListener("click", function() {
+                    var clickedColor = this.style.backgroundColor;
+                    if(clickedColor === pickedColor) {
+                        messageDisplay.textContent = "Correct";
+                        if(livesDisplay.textContent > 0 && resetButton.textContent != "Play Again"){
+                            var num = scoreDisplay.textContent;
+                            num = parseInt(num, 10);
+                            scoreDisplay.textContent = num+1;
+                        }
+                        resetButton.textContent = "Play Again";
+                        changeColors(pickedColor);
+                    }
+                    else {
+                        this.style.backgroundColor = "#232323";
+                        messageDisplay.textContent = "try again";
+                        if(livesDisplay.textContent > 0 && livesDisplay.textContent < 5 ){
+                            var num = livesDisplay.textContent;
+                            num = parseInt(num, 10);
+                            livesDisplay.textContent = num-1;
+                        }
+                    }
+                });
+            }
+        }
+
+        function setupMode() {
+            for(var i = 0; i < modeButtons.length; i++) {
+                modeButtons[i].addEventListener("click", function() {
+                    for (var i = 0; i < modeButtons.length; i++) {
+                        modeButtons[i].classList.remove("selected");
+                    }
+                    this.classList.add("selected");
+                    if (this.textContent === "Easy") {
+                        numSquares = 3;
+                    }
+                    else {
+                        numSquares = 6;
+                    }
+                    reset();
+                });
+            }
+        }
+
+        function setupDifficulty() {
+            for(var i = 0; i < difficultyButtons.length; i++) {
+                difficultyButtons[i].addEventListener("click", function() {
+                    for (var i = 0; i < difficultyButtons.length; i++) {
+                        difficultyButtons[i].classList.remove("selected");
+                    }
+                    this.classList.add("selected");
+                    if (this.textContent === "Casual") {
+                        scoreDisplay.textContent = 0
+                        livesDisplay.textContent = Infinity
+                    }
+                    else {
+                        scoreDisplay.textContent = 0
+                        livesDisplay.textContent = 3
+                    }
+                    reset();
+                });
+            }
+        }
+
+        function reset() {
+            colors = genRandomColors(numSquares);
+            pickedColor = chooseColor();
+            colorDisplay.textContent = pickedColor;
+            h1.style.backgroundColor = "#57C888";
+            h2.style.backgroundColor = "#57C888";
+            resetButton.textContent = "New Colors";
+            messageDisplay.textContent = "";
+            for (var i = 0; i < squares.length; i++) {
+                if(colors[i]) { 
+                    squares[i].style.display = "block";
+                    squares[i].style.backgroundColor = colors[i];
+                }
+                else {
+                    squares[i].style.display = "none";
+                }
+            }
+        }
+
+        function changeColors(color) {
+            for(var i = 0; i < squares.length; i++) {
+                squares[i].style.backgroundColor = color;
+                h1.style.backgroundColor = color;
+                h2.style.backgroundColor = color;
+            }
+        }
+
+        function chooseColor() {
+            var random = Math.floor(Math.random() * colors.length);
+            return colors[random];
+        }
+
+        function genRandomColors(num) {
+            var arr = [];
+            for (var i = 0; i < num; i++) {
+                arr.push(makeColor());
+            }
+            return arr;
+        }
+
+        function makeColor() {
+            var r = Math.floor(Math.random() * 256);
+            var g = Math.floor(Math.random() * 256);
+            var b = Math.floor(Math.random() * 256);
+            return "rgb(" + r + ", " + g + ", " + b + ")"; 
+        }
+    </script>
+</body>
+</html>
